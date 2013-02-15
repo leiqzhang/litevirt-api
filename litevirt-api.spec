@@ -35,6 +35,9 @@ make install DESTDIR=%{buildroot}
 %files
 /var/www/litevirt/server.*
 %{python_sitelib}/mimerender
+%config(noreplace) %attr(0600, root, root) /etc/ssl/private/lighttpd.pem
+
+%doc README
 
 %changelog
 * Tue Aug 30 2012 Hao Luo <hluo@litevirt.com> - 0.1.0

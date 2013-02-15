@@ -5,6 +5,10 @@ pywebappdir = /var/www/litevirt
 pywebapp_PYTHON = \
 	server.py
 
+pemdir = /etc/ssl/private
+dist_pem_DATA = \
+	lighttpd.pem
+	
 
 EXTRA_DIST = \
 	litevirt-api.spec
