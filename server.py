@@ -32,7 +32,8 @@ try:
     import simplejson as json
 except ImportError:
     import json
-import mimerender
+
+from mimerender import mimerender
 
 mimerender = mimerender.WebPyMimeRender()
 
