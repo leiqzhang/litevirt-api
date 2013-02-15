@@ -10,9 +10,9 @@ EXTRA_DIST = \
 	litevirt-api.spec
 
 rpms: dist
-	rpmbuild  -ta $(distdir).tar.gz
+	rpmbuild -ta --clean $(distdir).tar.gz
 
 
 srpms: dist
-	rpmbuild  -ts $(distdir).tar.gz
+	rpmbuild -ts --clean $(distdir).tar.gz
 
