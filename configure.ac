@@ -8,6 +8,7 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign -Wno-portability tar-pax])
 AM_PATH_PYTHON
 
 AC_CONFIG_FILES([Makefile
+                pamauth/Makefile
                 mimerender/Makefile])
 
 
