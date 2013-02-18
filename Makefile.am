@@ -1,5 +1,6 @@
 SUBDIRS = \
-    mimerender
+    mimerender \
+	pamauth
 
 pywebappdir = /var/www/litevirt
 pywebapp_PYTHON = \
@@ -7,7 +8,9 @@ pywebapp_PYTHON = \
 
 pemdir = /etc/ssl/private
 dist_pem_DATA = \
-	lighttpd.pem
+	lighttpd.cert \
+	litevirt.pem \
+	litevirt.cert
 	
 
 EXTRA_DIST = \
