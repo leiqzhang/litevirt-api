@@ -9,6 +9,7 @@ AM_PATH_PYTHON
 
 AC_CONFIG_FILES([Makefile
                 pamauth/Makefile
+                LitevirtAPI/Makefile
                 mimerender/Makefile])
 
 

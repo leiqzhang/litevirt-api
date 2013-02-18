@@ -36,6 +36,7 @@ make install DESTDIR=%{buildroot}
 %attr(0755, root, root) /var/www/litevirt/server.*
 %{python_sitelib}/mimerender
 %{python_sitelib}/pamauth
+%{python_sitelib}/LitevirtAPI
 %config(noreplace) %attr(0600, root, root) /etc/ssl/private/lighttpd.cert
 %config(noreplace) %attr(0600, root, root) /etc/ssl/private/litevirt.cert
 %config(noreplace) %attr(0600, root, root) /etc/ssl/private/litevirt.pem

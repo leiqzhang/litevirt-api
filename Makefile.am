@@ -1,6 +1,7 @@
 SUBDIRS = \
     mimerender \
-	pamauth
+	pamauth \
+	LitevirtAPI 
 
 pywebappdir = /var/www/litevirt
 pywebapp_PYTHON = \
