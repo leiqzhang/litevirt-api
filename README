@@ -1,3 +1,11 @@
 Overview
 ===========
 litevirt-api provide RESTful API services for litevirt.
+
+BUILD
+===========
+$ aclocal
+$ autoconf
+$ automake
+$ ./configure
+$ make rpms
