@@ -1,4 +1,6 @@
 pylitevirtapidir = $(pythondir)/LitevirtAPI
 pylitevirtapi_PYTHON = \
-  __init__.py 
+  __init__.py \
+  token.py \
+  log.py
 
