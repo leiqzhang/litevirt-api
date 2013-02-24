@@ -1,20 +1,25 @@
 SUBDIRS = \
     mimerender \
+    LitevirtService \
 	LitevirtAPI 
 
-pywebappdir = /var/www/litevirt
-pywebapp_PYTHON = \
-	server.py
+dist_libexec_SCRIPTS = \
+	litevirt-api-server.py
 
-pemdir = /etc/ssl/private
+dist_sbin_SCRIPTS = \
+	litevirt-make-cert
+
+pemdir = /etc/ssl/litevirt
 dist_pem_DATA = \
-	lighttpd.cert \
-	litevirt.pem \
-	litevirt.cert
+	litevirt-api.pem \
+	litevirt-api.crt
 	
 
 EXTRA_DIST = \
 	litevirt-api.spec
+
+install-exec-hook:
+	mv $(DESTDIR)$(libexecdir)/litevirt-api-server.py $(DESTDIR)$(libexecdir)/litevirt-api-server
 
 rpms: dist
 	rpmbuild -ta --clean $(distdir).tar.gz

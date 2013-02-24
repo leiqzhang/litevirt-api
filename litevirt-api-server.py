@@ -32,8 +32,10 @@ try:
     import simplejson as json
 except ImportError:
     import json
-
-from mimerender import mimerender
+import mimerender
+import time
+from gevent import monkey; monkey.patch_all()
+from gevent.pywsgi import WSGIServer
 
 mimerender = mimerender.WebPyMimeRender()
 
@@ -43,11 +45,11 @@ render_html = lambda message: '<html><body>%s</body></html>'%message
 render_txt = lambda message: message
 
 urls = (
-    '/api/(.*)', 'api'
+    '/api/', 'index',
 )
-app = web.application(urls, globals())
 
-class api:
+
+class index:
     @mimerender(
         default = 'html',
         html = render_html,
@@ -55,10 +57,20 @@ class api:
         json = render_json,
         txt = render_txt
     )
-    def GET(self, name):
-        if not name:
-            name = 'world'
-        return {'message': 'Hello, ' + name + '!'}
+
+    def GET(self):
+        #time.sleep(10)
+        return {'message': 'Hello, world!'}
+
 
 if __name__ == "__main__":
-    app.run()
+    #app = web.application(urls, globals())
+    #app.run()
+    key = "/etc/ssl/litevirt/litevirt-api.pem"
+    crt = "/etc/ssl/litevirt/litevirt-api.cert"
+    application = web.application(urls, globals()).wsgifunc()
+    server = WSGIServer(('', 8088), 
+                        application, 
+                        keyfile = key, 
+                        certfile = crt)
+    server.serve_forever()
