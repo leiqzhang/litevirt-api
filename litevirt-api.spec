@@ -13,6 +13,8 @@ Source0:	%{name}-%{version}.tar.gz
 
 BuildRequires:	python-setuptools python-devel automake autoconf
 Requires:       python-mimeparse
+Requires:       python-gevent
+Requires:       python-webpy
 
 BuildArch:      noarch
 
@@ -37,7 +39,7 @@ make install DESTDIR=%{buildroot}
 %{python_sitelib}/LitevirtAPI
 %{python_sitelib}/LitevirtService
 %{_libexecdir}/litevirt-api-server
-%{_sbindir}/litevirt-make-cert
+%attr(0755, root, root) %{_sbindir}/litevirt-make-cert
 %config(noreplace) %attr(0600, root, root) /etc/ssl/litevirt/litevirt-api.crt
 %config(noreplace) %attr(0600, root, root) /etc/ssl/litevirt/litevirt-api.pem
 
