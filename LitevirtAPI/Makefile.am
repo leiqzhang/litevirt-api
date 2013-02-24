@@ -4,5 +4,7 @@ pylitevirtapi_PYTHON = \
   token.py \
   log.py \
   daemon.py \
+  host.py \
+  vm.py \
   auth.py
 

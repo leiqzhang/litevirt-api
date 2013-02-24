@@ -1,6 +1,5 @@
 SUBDIRS = \
     mimerender \
-    LitevirtService \
 	LitevirtAPI 
 
 dist_libexec_SCRIPTS = \

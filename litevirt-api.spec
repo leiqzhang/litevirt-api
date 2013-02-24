@@ -37,7 +37,6 @@ make install DESTDIR=%{buildroot}
 %files
 %{python_sitelib}/mimerender
 %{python_sitelib}/LitevirtAPI
-%{python_sitelib}/LitevirtService
 %{_libexecdir}/litevirt-api-server
 %attr(0755, root, root) %{_sbindir}/litevirt-make-cert
 %config(noreplace) %attr(0600, root, root) /etc/ssl/litevirt/litevirt-api.crt
