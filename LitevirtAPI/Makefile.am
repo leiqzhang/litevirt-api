@@ -6,5 +6,7 @@ pylitevirtapi_PYTHON = \
   daemon.py \
   host.py \
   vm.py \
+  network.py \
+  storage.py \
   auth.py
 
