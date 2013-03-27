@@ -1,62 +1,124 @@
 #!/usr/bin/python
 
 import os
-
 import utils
 
 
 class Volume(object):
-    def __init__(self, datastore, grp = None, name):
-        self._grp = None
-        self._capacity = capacity
-        self._datastore = datastore
-        self._name = name
-        self._is_thin = 
+    def __init__(self, grp, guid, alias = None):
+        self._grp = grp
+        self._alias = alias
+        self._guid = guid
 
-    def capacity(self):
-        return self._capacity
+    @property
+    def alias(self):
+        return self._alias
 
-    def name(self):
-        return self._name
+    @property
+    def group(self):
+        return self._grp
 
-    def is_thin(self):
-        return self._thin
-
-
-class VolumeGroup(set):
-    def __init__(self):
-        set.__init__(self, name = "", desc = "")
-        self._guid = utils.uuidgen()
-        self._name = name
-        self._desc = desc
-
-    def name(self):
-        return self._name
-
-    def description(self):
-        return self._desc
-
+    @property
     def guid(self):
         return self._guid
 
 
+class VolumeGroup(object):
+    def __init__(self, datastore, guid, alias = ""):
+        self._name = name
+        self._datastore = datastore
+        self._guid = guid
+        self._path = os.path.join(self.datastore.path, guid)
+
+    @property
+    def alias(self):
+        return self._alias
+
+    @property
+    def name(self):
+        return "__vm__" + self.alias
+
+    @property
+    def guid(self):
+        return self._guid
+
+    @property
+    def datastore(self):
+        return self._datastore
+
+    @property
+    def path(self):
+        return self._path
+
+    def enumerate_volumes(self):
+        ret = list()
+        path = os.path.join(self._datastore.path, self.guid)
+
+        try:
+            ret = [Volume(self, f) for f in os.listdir(path) \
+                    path.startswith("__vm__")]
+        except IOError:
+            pass
+
+        return ret
+
+    def create_vmspec_volume(self, profile = None)
+        pass
+
+    def create_vm_volume(self, profile = None)
+        pass
+
+    def create_snapshot_volume(self, profile = None):
+        pass
+            
+    def delete_volume(self, vol):
+        pass
+
 class Datastore(object):
     """Datastore structure:
         /datastore
-            /guid
-                /__anonym__  (dir to put anonymous volumes)
-                /__vm_xxx__  (vm group)
-                    /__vol1
-                    /__vol2
-                    /__vmspec
-                    /__snapshot1
-                    /__snapshot2
-            /alias           (a symlink to a datastore guid)
-            /.metadata       (datastore metadata)
+            /guid            (datastore identified by guid)
+                /guid        (group identified by guid)
+                /__anonym__  (a symlink to the anonymous group)
+                /__vm_xxx__  (a symlink to a naming group)
+                    /guid            (volume)
+                    /__vol__alias    (a symlink to a volume)
+            /__datastore__alias      (a symlink to a datastore)
+            /.metadata               (datastore metadata)
     """
+
+    @staticmethod
+    def create(alias = "", desc = ""):
+        if not alias:
+            alias = os.tempnam("/datastore")
+
+        name = "__datastore__" + alias
+        if os.path.exists(os.path.join("/datastore", name)):
+            return None
+
+        for retry in range(3):
+            guid = utils.uuidgen()
+            path = os.path.join("/datastore", guid)
+            if not os.path.exists(path):
+                os.mkdirs(path, 0755)
+                os.symlink(path, os.path.join("/datastore", name))
+
+                # initialize anonymous group 
+                anonym_grp = os.path.join(path, utils.uuidgen())
+                os.mkdirs(anonym_grp, 0755)
+                os.symlink(anonym_grp, "__anonym__")
+
+                return Datastore(guid, alias, desc) 
+
+        return None
+
+    @staticmethod
+    def enumerate_host():
+        pass
+            
     def __init__(self, guid, alias = "", desc = ""):
         self._guid = guid
-        self._root = os.path.join("/datastore", self._guid)
+        self._path = os.path.join("/datastore", self.guid)
         self._alias = alias
         self._desc = desc
 
@@ -64,58 +126,52 @@ class Datastore(object):
         ret = list()
 
         try:
-            ret = [g[6:] for g in os.listdir(self._root) \
-                    if g != "__anonym__" and g.startswith("__vm__")]
+            ret = [VolumeGroup(self, grp) for grp in os.listdir(self.path) \
+                    if grp == "__anonym__" and grp.startswith("__vm__")]
         except IOError:
             pass
 
         return ret
 
-    def enumerate_volumes(self, grp):
+
+    def clone_volume(self, source, target):
         pass
 
-    def enumerate_anonymous_volumes(self):
-        ret = list()
-
-        try: 
-            anonym_dir = os.path.join(self._root, "__anonym__")
-            ret = [Volume(self._guid, v) for v in os.listdir(anonym_dir) \
-                    if os.path.exists(anonym_dir)]
-        except IOError:
-            pass
-
-        return ret
-
-    def create_vmspec(self, grp):
+    def migrate_volume(self, source, target):
         pass
 
-    def delete_vmspec(self, grp):
-        pass
-        
-    def create_volume(self, grp = None):
-        pass
+    def create_group(self, alias = None):
+        if not alias:
+            alias = os.tempnam(self.path)
 
-    def delete_volume(self, vol, grp = None):
-        pass
+        name = "__vm__" + alias
+        if os.path.exists(os.path.join(self.path, name)):
+            return None
 
-    def clone_volume(self, vol, grp_from = None, grp_to = None):
-        pass
+        for retry in range(3):
+            guid = utils.uuidgen()
+            path = os.path.join(self.path, guid)
+            if not os.path.exists(path):
+                os.mkdirs(path, 0755)
+                os.symlink(path, os.path.join(path, name))
+                return VolumeGroup(self, guid, alias)
 
-    def create_group(self):
-        pass
+        return None
 
     def delete_group(self, grp):
         pass
+ 
+    @property
+    def path(self):
+        return self._path
 
-    def create_snapshot(self, vol, grp = None):
-        pass
-
-    def delete_snapshot(self, vol, grp = None):
-        pass
-  
     @property
     def alias(self):
         return self._alias
+
+    @property
+    def name(self):
+        return "__datastore__" + self._alias
 
     @property
     def description(self):
