@@ -1,3 +1,23 @@
+#
+# Copyright 2012 - 2013 Litevirt.com.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+#
+# Refer to the README and COPYING files for full details of the license
+#
+
 #!/usr/bin/python
 
 import os
@@ -9,10 +29,15 @@ class Volume(object):
         self._grp = grp
         self._alias = alias
         self._guid = guid
+        self._path = os.path.join(self.group.path, guid)
 
     @property
     def alias(self):
         return self._alias
+
+    @property
+    def name(self):
+        return "__vol__" + self._alias
 
     @property
     def group(self):
@@ -21,6 +46,10 @@ class Volume(object):
     @property
     def guid(self):
         return self._guid
+
+    @property
+    def path(self):
+        return self._path
 
 
 class VolumeGroup(object):
@@ -56,16 +85,16 @@ class VolumeGroup(object):
 
         try:
             ret = [Volume(self, f) for f in os.listdir(path) \
-                    path.startswith("__vm__")]
+                    if f.startswith("__vol__")]
         except IOError:
             pass
 
         return ret
 
-    def create_vmspec_volume(self, profile = None)
+    def create_vmspec_volume(self, profile = None):
         pass
 
-    def create_vm_volume(self, profile = None)
+    def create_vm_volume(self, profile = None):
         pass
 
     def create_snapshot_volume(self, profile = None):
