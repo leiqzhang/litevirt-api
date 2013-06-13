@@ -9,9 +9,6 @@ dist_libexec_SCRIPTS = \
 EXTRA_DIST = \
 	litevirt-api.spec
 
-install-exec-hook:
-	mv $(DESTDIR)$(libexecdir)/litevirt-api-server.py $(DESTDIR)$(libexecdir)/litevirt-api-server
-
 rpms: dist
 	rpmbuild -ta --clean $(distdir).tar.gz
 

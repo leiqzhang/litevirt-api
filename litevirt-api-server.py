@@ -66,11 +66,7 @@ class index:
 if __name__ == "__main__":
     #app = web.application(urls, globals())
     #app.run()
-    key = "/etc/ssl/private/litevirt-api.key"
-    crt = "/etc/ssl/private/litevirt-api.crt"
     application = web.application(urls, globals()).wsgifunc()
     server = WSGIServer(('', 8088), 
-                        application, 
-                        keyfile = key, 
-                        certfile = crt)
+                        application)
     server.serve_forever()
