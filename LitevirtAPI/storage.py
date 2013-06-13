@@ -143,7 +143,7 @@ class Datastore(object):
         if os.path.exists(os.path.join(Datastore._dsroot, uri)):
             return None
 
-        # fails to create the datastore if alias exists        
+        # fails to create the datastore if alias exists
         if alias and os.path.exists(os.path.join(Datastore._dsroot, alias)):
                 return None
 

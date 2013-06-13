@@ -5,14 +5,6 @@ SUBDIRS = \
 dist_libexec_SCRIPTS = \
 	litevirt-api-server.py
 
-dist_sbin_SCRIPTS = \
-	litevirt-make-cert
-
-pemdir = /etc/ssl/litevirt
-dist_pem_DATA = \
-	litevirt-api.pem \
-	litevirt-api.crt
-	
 
 EXTRA_DIST = \
 	litevirt-api.spec
