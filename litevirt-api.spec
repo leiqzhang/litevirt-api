@@ -13,6 +13,7 @@ Source0:	%{name}-%{version}.tar.gz
 
 BuildRequires:	python-setuptools python-devel automake autoconf
 Requires:       python-mimeparse
+Requires:       python-gevent
 Requires:       python-webpy
 
 BuildArch:      noarch
