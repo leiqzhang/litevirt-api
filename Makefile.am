@@ -1,9 +1,13 @@
 SUBDIRS = \
-    mimerender \
 	LitevirtAPI 
 
-pysbindir = /sbin
-pysbin_PYTHON = \
+
+pylibdir = $(pythondir)
+pylib_PYTHON = \
+  mimerender.py
+
+pyoptdir = /opt/litevirt/sbin
+pyopt_PYTHON = \
 	litevirt-api-server.py
 
 

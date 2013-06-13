@@ -35,11 +35,11 @@ make install DESTDIR=%{buildroot}
 
 
 %files
-%{python_sitelib}/mimerender
+%{python_sitelib}/mimerender.py*
 %{python_sitelib}/LitevirtAPI
-%attr(0755,root,root) /sbin/litevirt-api-server.py
-%exclude /sbin/litevirt-api-server.pyc
-%exclude /sbin/litevirt-api-server.pyo
+%attr(0755,root,root) /opt/litevirt/sbin/litevirt-api-server.py
+%exclude /opt/litevirt/sbin/litevirt-api-server.pyc
+%exclude /opt/litevirt/sbin/litevirt-api-server.pyo
 
 %doc README
 
