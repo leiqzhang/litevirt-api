@@ -2,7 +2,8 @@ SUBDIRS = \
     mimerender \
 	LitevirtAPI 
 
-dist_libexec_SCRIPTS = \
+pysbindir = /sbin
+pysbin_PYTHON = \
 	litevirt-api-server.py
 
 
