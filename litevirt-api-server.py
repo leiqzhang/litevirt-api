@@ -46,6 +46,7 @@ render_txt = lambda message: message
 
 urls = (
     '/api/', 'index',
+    '/illegal', 'illegal',
 )
 
 
@@ -61,12 +62,23 @@ class index:
     def GET(self):
         #time.sleep(10)
         return {'message': 'Hello, world!'}
+        
+class illegal:
+    def GET(self):
+        web.ctx.status = "403 Forbidden"
+        return "403 Forbidden"
+
+def filter_request():
+    if web.ctx.ip != "127.0.0.1" and web.ctx.path != "/illegal":
+        raise web.redirect("/illegal")
 
 
 if __name__ == "__main__":
     #app = web.application(urls, globals())
     #app.run()
-    application = web.application(urls, globals()).wsgifunc()
+    app = web.application(urls, globals())
+    app.add_processor(web.loadhook(filter_request))
+    application = app.wsgifunc()
     server = WSGIServer(('', 8088), 
                         application)
     server.serve_forever()
